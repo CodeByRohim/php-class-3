@@ -5,7 +5,7 @@ $detail = ($_REQUEST['detail']);
 $author = ($_REQUEST['author']);
 $phone = ($_REQUEST['phone']);
 $date = ($_REQUEST['date']);
-// $id = ($_REQUEST['id']);
+$id = ($_REQUEST['id']);
 $todaysDate = new DateTime();
 $selecteDate = new DateTime($date);
 $errors = [];
@@ -49,17 +49,13 @@ if(count($errors) > 0){
   // redirection
   $_SESSION['old'] = $_REQUEST;
   $_SESSION['errors'] = $errors;
-  header("Location:../index.php");
+  header("Location:../postedit.php?id=$id");
 } else{
-// store
-require "../database/env.php";
-$query = "INSERT INTO  posts(title, detail, author, phone, date) VALUES ('$title','$detail','$author','$phone','date')";
-
-$res = mysqli_query($conn , $query);
-
-if($res){
-  header("Location:../post.php");
+  // Update
+  require "../database/env.php";
+ $query = "UPDATE posts SET title='$title',detail='$detail',author='$author',phone='$phone',date='$date' WHERE id = '$id'";
+ $result = mysqli_query($conn, $query);
+if($result){
+  header("Location: ../post.php");
 }
-
-
 }
